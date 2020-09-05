@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import swal from "sweetalert";
 
@@ -6,7 +7,6 @@ import openModal from "../../actions/openModal";
 import SignUp from "../SignUp/SignUp";
 import regAction from "../../actions/regAction";
 import "./Login.css";
-import { useDispatch } from "react-redux";
 
 const Login = (props) => {
     const dispatch = useDispatch();
