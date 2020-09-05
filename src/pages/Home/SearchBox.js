@@ -1,97 +1,86 @@
-import React, { Component } from "react";
+import React from "react";
 
+import useControlledInput from "../../hooks/useControlledInput";
 import "./SearchBox.css";
 
-class SearchBox extends Component {
-    state = {
-        where: "",
-        checkIn: "",
-        checkOut: "",
-        guests: 0,
-    };
+const SearchBox = (props) => {
+    // Using custom-hooks
+    const where = useControlledInput(""); // where.value, where.onChange
+    const checkIn = useControlledInput(""); // checkIn.value, checkIn.onChange
+    const checkOut = useControlledInput(""); // checkOut.value, checkOut.onChange
+    const guests = useControlledInput(""); // guests.value, guests.onChange
 
-    changeWhere = (e) => this.setState({ where: e.target.value });
-    changeCheckIn = (e) => this.setState({ checkIn: e.target.value });
-    changeCheckOut = (e) => this.setState({ checkOut: e.target.value });
-    changeGuests = (e) => this.setState({ guests: e.target.value });
-
-    submitSearch = (e) => {
+    const submitSearch = (e) => {
         e.preventDefault();
-        this.props.history.push(`/search/${this.state.where}`);
+        props.history.push(`/search/${where.value}`);
     };
 
-    render() {
-        return (
-            <div className="home-search-box col m4">
-                <h1>Book unique places to stay and things to do.</h1>
+    return (
+        <div className="home-search-box col m4">
+            <h1>Book unique places to stay and things to do.</h1>
 
-                <form className="search-box-form" onSubmit={this.submitSearch}>
-                    {/* Input box for location name */}
-                    <div className="col m12">
-                        <div className="form-label">Where</div>
-                        <div className="input-field" id="where">
-                            <input
-                                type="text"
-                                className="browser-default"
-                                placeholder="Anywhere"
-                                value={this.state.where}
-                                onChange={this.changeWhere}
-                            />
-                        </div>
+            <form className="search-box-form" onSubmit={submitSearch}>
+                {/* Input box for location name */}
+                <div className="col m12">
+                    <div className="form-label">Where</div>
+                    <div className="input-field" id="where">
+                        <input
+                            type="text"
+                            className="browser-default"
+                            placeholder="Anywhere"
+                            {...where}
+                        />
                     </div>
+                </div>
 
-                    {/* Date picker for check in date */}
-                    <div className="col m6">
-                        <div className="form-label">Check-In</div>
-                        <div className="input-field" id="check-in">
-                            <input
-                                type="date"
-                                className="browser-default"
-                                value={this.state.checkIn}
-                                onChange={this.changeCheckIn}
-                            />
-                        </div>
+                {/* Date picker for check in date */}
+                <div className="col m6">
+                    <div className="form-label">Check-In</div>
+                    <div className="input-field" id="check-in">
+                        <input
+                            type="date"
+                            className="browser-default"
+                            {...checkIn}
+                        />
                     </div>
-                    {/* Date picker for check out date */}
-                    <div className="col m6">
-                        <div className="form-label">Check-Out</div>
-                        <div className="input-field" id="check-in">
-                            <input
-                                type="date"
-                                className="browser-default"
-                                value={this.state.checkOut}
-                                onChange={this.changeCheckOut}
-                            />
-                        </div>
+                </div>
+                {/* Date picker for check out date */}
+                <div className="col m6">
+                    <div className="form-label">Check-Out</div>
+                    <div className="input-field" id="check-in">
+                        <input
+                            type="date"
+                            className="browser-default"
+                            {...checkOut}
+                        />
                     </div>
+                </div>
 
-                    {/* Number box for entering no. of guests */}
-                    <div className="col m12">
-                        <div className="form-label">Guests</div>
-                        <div className="input-field" id="where">
-                            <input
-                                type="number"
-                                className="browser-default"
-                                placeholder="Number of guests"
-                                value={this.state.guests}
-                                onChange={this.changeGuests}
-                            />
-                        </div>
+                {/* Number box for entering no. of guests */}
+                <div className="col m12">
+                    <div className="form-label">Guests</div>
+                    <div className="input-field" id="where">
+                        <input
+                            type="number"
+                            className="browser-default"
+                            placeholder="Number of guests"
+                            {...guests}
+                        />
                     </div>
+                </div>
 
-                    {/* Submit button */}
-                    <div className="col m12 submit-btn">
-                        <div className="input-field" id="submit-btn">
-                            <input
-                                className="btn-large waves-effect waves-light red accent-2"
-                                type="submit"
-                            />
-                        </div>
+                {/* Submit button */}
+                <div className="col m12 submit-btn">
+                    <div className="input-field" id="submit-btn">
+                        <input
+                            className="btn-large waves-effect waves-light red accent-2"
+                            type="submit"
+                        />
                     </div>
-                </form>
-            </div>
-        );
-    }
-}
+                </div>
+            </form>
+        </div>
+    );
+};
 
 export default SearchBox;
