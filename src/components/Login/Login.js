@@ -1,6 +1,4 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import React, { useState } from "react";
 import axios from "axios";
 import swal from "sweetalert";
 
@@ -8,26 +6,25 @@ import openModal from "../../actions/openModal";
 import SignUp from "../SignUp/SignUp";
 import regAction from "../../actions/regAction";
 import "./Login.css";
+import { useDispatch } from "react-redux";
 
-class Login extends Component {
-    state = {
-        email: "",
-        password: "",
-    };
-    changeEmail = (e) => this.setState({ email: e.target.value });
-    changePassword = (e) => this.setState({ password: e.target.value });
+const Login = (props) => {
+    const dispatch = useDispatch();
 
-    submitLogin = async (e) => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const changeEmail = (e) => setEmail(e.target.value);
+    const changePassword = (e) => setPassword(e.target.value);
+
+    const submitLogin = async (e) => {
         e.preventDefault();
-
         const loginUser = {
-            email: this.state.email,
-            password: this.state.password,
+            email,
+            password,
         };
-
         const url = `${process.env.REACT_APP_API_URL}/users/login`;
         const response = await axios.post(url, loginUser);
-        console.log(response.data);
 
         if (response.data.msg === "loggedIn") {
             swal({
@@ -35,7 +32,7 @@ class Login extends Component {
                 text: "You have successfully logged in",
                 icon: "success",
             });
-            this.props.regAction(response.data);
+            dispatch(regAction(response.data));
         } else if (response.data.msg === "badPass") {
             swal({
                 title: "Login failed",
@@ -51,59 +48,43 @@ class Login extends Component {
         }
     };
 
-    render() {
-        return (
-            <div className="login-form">
-                <form onSubmit={this.submitLogin}>
-                    <button className="facebook-login">
-                        Connect With Facebook
-                    </button>
-                    <button className="google-login">
-                        Connect With Google
-                    </button>
-                    <div className="login-or center">
-                        <span>or</span>
-                        <div className="or-divider"></div>
-                    </div>
-                    <input
-                        type="email"
-                        className="browser-default"
-                        placeholder="Email address"
-                        onChange={(e) => this.changeEmail(e)}
-                    />
-                    <input
-                        type="password"
-                        className="browser-default"
-                        placeholder="Password"
-                        onChange={(e) => this.changePassword(e)}
-                    />
-                    <button className="sign-up-button">Login</button>
-                    <div className="divider"></div>
-                    <div>
-                        Don't have an account?{" "}
-                        <span
-                            className="pointer"
-                            onClick={() => {
-                                this.props.openModal("open", <SignUp />);
-                            }}
-                        >
-                            Sign up
-                        </span>
-                    </div>
-                </form>
-            </div>
-        );
-    }
-}
-
-const mapDispatchToProps = (dispatcher) => {
-    return bindActionCreators(
-        {
-            openModal,
-            regAction,
-        },
-        dispatcher
+    return (
+        <div className="login-form">
+            <form onSubmit={submitLogin}>
+                <button className="facebook-login">
+                    Connect With Facebook
+                </button>
+                <button className="google-login">Connect With Google</button>
+                <div className="login-or center">
+                    <span>or</span>
+                    <div className="or-divider"></div>
+                </div>
+                <input
+                    type="email"
+                    className="browser-default"
+                    placeholder="Email address"
+                    onChange={changeEmail}
+                />
+                <input
+                    type="password"
+                    className="browser-default"
+                    placeholder="Password"
+                    onChange={changePassword}
+                />
+                <button className="sign-up-button">Login</button>
+                <div className="divider"></div>
+                <div>
+                    Don't have an account?{" "}
+                    <span
+                        className="pointer"
+                        onClick={() => dispatch(openModal("open", <SignUp />))}
+                    >
+                        Sign up
+                    </span>
+                </div>
+            </form>
+        </div>
     );
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default Login;

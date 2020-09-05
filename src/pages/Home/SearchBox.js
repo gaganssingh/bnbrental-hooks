@@ -8,7 +8,7 @@ const SearchBox = (props) => {
     const where = useControlledInput(""); // where.value, where.onChange
     const checkIn = useControlledInput(""); // checkIn.value, checkIn.onChange
     const checkOut = useControlledInput(""); // checkOut.value, checkOut.onChange
-    const guests = useControlledInput(""); // guests.value, guests.onChange
+    const guests = useControlledInput(1); // guests.value, guests.onChange
 
     const submitSearch = (e) => {
         e.preventDefault();
